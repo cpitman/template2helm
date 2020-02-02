@@ -108,7 +108,7 @@ func objectToTemplate(objects *[]runtime.RawExtension, templates *[]*chart.File)
 		if err != nil {
 			return fmt.Errorf(fmt.Sprintf("Failed to unmarshal Raw resource\n%v\n", v.Raw) + err.Error())
 		}
-		name := "templates/" + strings.ToLower(k8sR.GetKind()+".yaml")
+		name := "templates/" + strings.ToLower(k8sR.GetKind()+"-"+k8sR.GetName()+".yaml")
 
 		log.Printf("Creating a template for object %s", name)
 		data, err := yaml.JSONToYAML(v.Raw)
