@@ -4,8 +4,8 @@ failures=0
 
 for test in $(find ./examples/ -maxdepth 1 -mindepth 1 -type f); do
   echo "Testing $test"
-  # get output of the template
-  templateOut=$(oc process --local -f $test -o yaml | yq '.items | sort_by(.kind, .metadata.name)')
+  # get output of the template, sort by kind and name, remove generated template label, and remove labels if empty
+  templateOut=$(oc process --local -f $test -o yaml | yq '.items | sort_by(.kind, .metadata.name) | del(.[].metadata.labels.template) | del(.[].metadata.labels | select(. == {}))')
   # convert template to chart
   template2helm convert --template $test --chart /tmp/charts > /dev/null
   # find newly created chart
