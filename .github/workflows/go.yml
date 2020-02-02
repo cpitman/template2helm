@@ -32,3 +32,9 @@ jobs:
       env:
         OC_BINARY_URL: https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/openshift-client-linux-4.3.0.tar.gz
         YQ_BINARY: https://github.com/mikefarah/yq/releases/download/2.4.1/yq_linux_amd64
+
+    - name: Upload Testing artifact
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: test-artifacts
+        path: /tmp/test
