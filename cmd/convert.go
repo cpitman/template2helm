@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	template ""
+	template "github.com/openshift/api/template/v1"
 	"github.com/spf13/cobra"
 	"helm.sh/helm/v3/pkg/chart"
 	"helm.sh/helm/v3/pkg/chartutil"
