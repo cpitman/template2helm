@@ -110,22 +110,21 @@ func objectToTemplate(objects *[]runtime.RawExtension, templateLabels *map[strin
 		}
 		name := "templates/" + strings.ToLower(k8sR.GetKind()+".yaml")
 
-		var labels map[string]string
 		labels := k8sR.GetLabels()
-		for key, value := range templateLabels {
+		for key, value := range *templateLabels {
 			labels[key] = value
 		}
 		k8sR.SetLabels(labels)
 
-		updatedJson, err := k8sR.MarshalJSON()
+		updatedJSON, err := k8sR.MarshalJSON()
 		if err != nil {
 			return fmt.Errorf(fmt.Sprintf("Failed to marshal Unstructured record to JSON\n%v\n", k8sR) + err.Error())
 		}
 
 		log.Printf("Creating a template for object %s", name)
-		data, err := yaml.JSONToYAML(updatedJson)
+		data, err := yaml.JSONToYAML(updatedJSON)
 		if err != nil {
-			return fmt.Errorf(fmt.Sprintf("Failed to marshal Raw resource back to YAML\n%v\n", updatedJson) + err.Error())
+			return fmt.Errorf(fmt.Sprintf("Failed to marshal Raw resource back to YAML\n%v\n", updatedJSON) + err.Error())
 		}
 
 		tf := chart.File{
