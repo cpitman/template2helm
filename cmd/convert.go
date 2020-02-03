@@ -111,10 +111,14 @@ func objectToTemplate(objects *[]runtime.RawExtension, templateLabels *map[strin
 		name := "templates/" + strings.ToLower(k8sR.GetKind()+".yaml")
 
 		labels := k8sR.GetLabels()
-		for key, value := range *templateLabels {
-			labels[key] = value
+		if labels == nil {
+			k8sR.SetLabels(*templateLabels)
+		} else {
+			for key, value := range *templateLabels {
+				labels[key] = value
+			}
+			k8sR.SetLabels(labels)
 		}
-		k8sR.SetLabels(labels)
 
 		updatedJSON, err := k8sR.MarshalJSON()
 		if err != nil {
